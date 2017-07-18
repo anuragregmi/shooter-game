@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1500395571 source:/home/anurag/Projects/codeblocks/game/main.cpp
+	<SFML/Graphics.hpp>
+	<iostream>
+
