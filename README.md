@@ -29,7 +29,7 @@ run the game
 ./game
 ```
 
-*note: place `BebasNeue Bold.ttf` file to current directory from where you run the app.
+*note: place `BebasNeue Bold.ttf` file to current directory from where you run the app.*
 # Playing:
 Space fires the ball. If you hit the moving target you'll get points.
 
