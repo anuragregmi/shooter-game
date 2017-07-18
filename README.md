@@ -4,6 +4,7 @@ minimal game built in c++ / SFML
 # Building the game
 ## Installing Dependencies
 * libsfml-dev
+
 For debian or debian based systems do:
 ```sh
 #apt install libsfml-dev
