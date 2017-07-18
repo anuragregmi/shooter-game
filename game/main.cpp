@@ -9,6 +9,7 @@ RenderWindow window(sf::VideoMode(800, 600), "Shooter");
 int HEIGHT,WIDTH;
 bool fired;  // variable to store status of bullet fired or not
 static int score;
+static int life;
 
 // shape declaration
 
@@ -19,6 +20,8 @@ ConvexShape gun;
 CircleShape bullet;
 
 Text scoreBoard;
+
+Text lifeBoard;
 
 // animates the target
 void animate_target(){
@@ -41,6 +44,7 @@ void animate_target(){
     }
 }
 
+// detects collision
 bool checkCollision(){
 
     bool status = false;
@@ -63,6 +67,9 @@ bool checkCollision(){
 // fire control
 void fire(){
     Clock clk;
+    bool collided = false;
+    lifeBoard.setString(to_string(life));
+    lifeBoard.setPosition(WIDTH - 100 ,400);
     while(bullet.getPosition().y > 100){
         // wait for 100 ms between transitions
         if(clk.getElapsedTime().asMilliseconds() > 100){
@@ -74,9 +81,21 @@ void fire(){
 
             if( checkCollision()){
                 score++;
+                collided = true;
             }
 
             clk.restart();
+        }
+    }
+    if(!collided){
+        life--;
+        if(life == 0){
+            lifeBoard.setString("GAME OVER");
+            lifeBoard.setPosition(WIDTH - 400 ,400);
+            life = 3;
+        }
+        else{
+            lifeBoard.setString(to_string(life));
         }
     }
     bullet.setPosition(WIDTH/2,HEIGHT);
@@ -86,6 +105,7 @@ void fire(){
 
 int main()
 {
+    life = 3;
     fired = false;
     HEIGHT = window.getSize().y;
     WIDTH = window.getSize().x;
@@ -129,28 +149,36 @@ int main()
     }
     scoreBoard = Text();
     scoreBoard.setFont(font);
-    scoreBoard.setColor(Color::Green);
+    scoreBoard.setFillColor(Color::Green);
     scoreBoard.setCharacterSize(100);
     scoreBoard.setString("0");
     scoreBoard.setPosition(0,400);
+
+    // lifeboard defination
+    lifeBoard = Text();
+    lifeBoard.setFont(font);
+    lifeBoard.setFillColor(Color::Green);
+    lifeBoard.setCharacterSize(100);
+    lifeBoard.setString("3");
+    lifeBoard.setPosition(WIDTH - 100 ,400);
+
 
     // run the program as long as window is open
     while(window.isOpen())
     {
         Event event;
 
-        HEIGHT = window.getSize().y;
-        WIDTH = window.getSize().x;
-
         // listen to all events
         while(window.pollEvent(event))
         {
-            // check if event is closed
+
             switch(event.type)
             {
+                // check if event is closed
                 case Event::Closed:
                     window.close();
                     break;
+                // check if any key is pressed
                 case Event::KeyPressed:
                     // cout << "Key Pressed";
                     if(event.key.code == Keyboard::Space){
@@ -174,6 +202,7 @@ int main()
         window.draw(gun);
         window.draw(bullet);
         window.draw(scoreBoard);
+        window.draw(lifeBoard);
 
         scoreBoard.setString(to_string(score));
         // displaying components
